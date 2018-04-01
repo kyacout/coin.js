@@ -1,0 +1,33 @@
+{
+  "name": "coin.js",
+  "version": "1.0.0",
+  "description": "A blockchain crypto-currency in javascript.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "Khaled Yacout",
+  "repository": {
+    "type": "git",
+    "url": "https://khaled_yacout@bitbucket.org/khaled_yacout/blockchain-toptal.git"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0"
+  },
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.12",
+    "node-jose": "^0.11.0",
+    "prompt": "^1.0.0",
+    "socket.io": "^2.1.0"
+  }
+}
