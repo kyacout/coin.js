@@ -1,6 +1,6 @@
 {
   "name": "coin.js",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A blockchain crypto-currency in javascript.",
   "main": "app.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "mongoose": "^5.0.12",
     "node-jose": "^0.11.0",
     "prompt": "^1.0.0",
-    "socket.io": "^2.1.0"
+    "socket.io": "^2.1.0",
+    "socket.io-client": "^2.1.0"
   }
 }

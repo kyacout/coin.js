@@ -8,4 +8,8 @@ module.exports = (app) => {
     .get(transactionController.readTransaction);
   app.route('/trx/')
     .post(transactionController.newTransaction);
+
+  app.use((req, res) => {
+    res.status(404).send({ url: `${req.originalUrl} not found` });
+  });
 };
