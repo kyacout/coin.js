@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const wallet = require('../wallet/wallet');
+const client = require('../../p2pNetwork/client');
 
 const Transaction = mongoose.model('Transaction');
 
@@ -33,6 +34,7 @@ exports.newTransaction = async (req, response) => {
     transaction.key = signature;
     await transaction.save();
     response.send(formatTransaction(transaction));
+    await client.broadcastTransaction(transaction.key);
   } catch (e) {
     response.send(e);
   }
