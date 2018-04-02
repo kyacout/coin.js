@@ -12,6 +12,6 @@ async function getTxnBody(txnKey) {
 }
 
 module.exports.broadcastTransaction = (txnKey) => {
-  console.log(`Broadcasting new transaction: ${txnKey}`);
+  console.log(`Broadcasting new transaction: ${txnKey.toString('hex')}`);
   socket.emit('newTxn', txnKey, getTxnBody);
 };

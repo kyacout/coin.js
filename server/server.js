@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const Transaction = mongoose.model('Transaction');
 
 async function newTxn(txnKey, getTxnBody) {
+  console.log('Received new transaction ..');
   try {
     const txn = await Transaction.findOne({ key: txnKey });
     if (!txn) {
+      console.log('Getting transaction body ..');
       getTxnBody(txnKey);
     }
   } catch (e) {
