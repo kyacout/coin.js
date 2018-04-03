@@ -10,6 +10,7 @@ require('./server/index');
 const routes = require('./server/routes');
 const wallet = require('./server/wallet/wallet');
 const server = require('./server/server');
+const miner = require('./server/block/miner');
 
 const PORT = 3322;
 
@@ -28,6 +29,7 @@ module.exports.getLocalExternalIP = () => [].concat(...Object.values(nwInterface
   try {
     await mongoose.connect('mongodb://localhost/blockchainDb');
     await wallet.init();
+    await miner.init();
     http.listen(PORT, () => logger.log(`Coin.js node successfuly started on: ${PORT}`));
   } catch (e) {
     logger.error(e);

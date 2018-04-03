@@ -22,7 +22,14 @@ const transactionSchema = new mongoose.Schema({
     required: true,
   },
   payload: {
-    type: String,
+    type: {},
+  },
+  mined: {
+    type: Boolean,
+    default: false,
+  },
+  block: {
+    type: Buffer,
   },
 });
 

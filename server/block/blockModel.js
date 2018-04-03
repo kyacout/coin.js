@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const headerSchema = new mongoose.Schema({
   version: {
-    type: Number,
+    type: String,
     required: true,
   },
   prevKey: {
@@ -42,9 +42,8 @@ const blockSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
+    default: Date.now(),
   },
 });
-
-blockSchema.statics.lastBlock = async () => this.findOne().sort('-header.height');
 
 module.exports = mongoose.model('Block', blockSchema);

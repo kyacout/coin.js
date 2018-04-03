@@ -6,7 +6,7 @@ const accountSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  txn: {
+  txCount: {
     type: Number,
     required: true,
     default: 0,

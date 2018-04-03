@@ -50,6 +50,7 @@ class Wallet {
       if (!this.account) {
         this.account = await this.Account.create({ address });
       }
+      console.log(`Your public address is: ${this.account.address}`);
     } catch (e) {
       this.logger.error(e);
     }
