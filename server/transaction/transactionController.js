@@ -6,7 +6,7 @@ const Transaction = mongoose.model('Transaction');
 
 function formatTransaction(transaction) {
   return {
-    key: transaction.key.toString('hex'),
+    key: transaction.key.toString('base64'),
     from: transaction.from,
     to: transaction.to,
     amount: transaction.amount,
@@ -39,3 +39,5 @@ exports.newTransaction = async (req, response) => {
     response.send(e);
   }
 };
+
+module.exports.formatTransaction = formatTransaction;

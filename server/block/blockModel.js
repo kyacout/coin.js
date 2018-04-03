@@ -9,7 +9,7 @@ const headerSchema = new mongoose.Schema({
     type: Buffer,
     required: true,
   },
-  mrootHash: {
+  mroot: {
     type: Buffer,
     required: true,
   },
@@ -44,5 +44,7 @@ const blockSchema = new mongoose.Schema({
     type: Date,
   },
 });
+
+blockSchema.statics.lastBlock = async () => this.findOne().sort('-header.height');
 
 module.exports = mongoose.model('Block', blockSchema);

@@ -16,17 +16,21 @@ async function newTxn(txnKey, getTxnBody) {
 }
 
 function saveNewTransaction(txn) {
-  Transaction.create(txn).catch((e) => { console.error(e); });
+  const temp = txn;
+  temp.key = Buffer.from(txn.key, 'base64');
+  Transaction.create({ trx: temp }).catch((e) => { console.error(e); });
 }
 
 module.exports = (io) => {
   io.on('connection', (socket) => {
-    console.log(`a user connected: ${socket}`);
+    inConnections[socket.id] = socket;
+    console.log(`User connected: ${socket.id}`);
 
-    socket.on('newTxn', newTxn);
+    socket.on('newTxn', () => { console.log('Received transaction!'); });
     socket.on('txnBody', saveNewTransaction);
     socket.on('disconnect', () => {
-      console.log('user disconnected');
+      delete inConnections[socket.id];
+      console.log(`User disconnected: ${socket.id}`);
     });
   });
 };
