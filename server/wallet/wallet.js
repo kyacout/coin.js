@@ -19,13 +19,13 @@ function keyFromAddress(address) {
 }
 
 function structureTransaction(transaction) {
-  return {
-    from: transaction.from,
-    to: transaction.to,
-    amount: transaction.amount,
-    nonce: transaction.nonce,
-    payload: transaction.payload,
-  };
+  return [
+    transaction.from,
+    transaction.to,
+    transaction.amount,
+    transaction.nonce,
+    JSON.stringify(transaction.payload),
+  ];
 }
 
 class Wallet {
@@ -59,8 +59,7 @@ class Wallet {
   async signTransaction(transaction) {
     const doc = structureTransaction(transaction);
     const hash = crypto.createHash('sha256');
-    let buf = hash.update(JSON.stringify(doc));
-    buf = buf.digest();
+    let buf = hash.update(JSON.stringify(doc)).digest();
 
     try {
       const key = await this.WalletKey.findOne({});
@@ -73,14 +72,13 @@ class Wallet {
     }
   }
 
-  async verifyTransaction(transaction) {
+  async verifyTransaction(transaction, key) {
     const doc = structureTransaction(transaction);
     const hash = crypto.createHash('sha256');
-    let buf = hash.update(JSON.stringify(doc));
-    buf = buf.digest();
+    const buf = hash.update(JSON.stringify(doc)).digest();
 
     try {
-      const generatedKey = await createJWK(keyFromAddress(transaction.from));
+      const generatedKey = await createJWK(keyFromAddress(key));
       const verifiedDoc = await generatedKey.verify('ES256', buf, transaction.key);
       return verifiedDoc.valid;
     } catch (e) {

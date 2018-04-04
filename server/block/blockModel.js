@@ -21,7 +21,7 @@ const headerSchema = new mongoose.Schema({
     type: {},
   },
   author: {
-    type: Buffer,
+    type: String,
     required: true,
   },
 });

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const config = require('../../config');
 
 const transactionSchema = new mongoose.Schema({
   key: {
@@ -16,6 +17,7 @@ const transactionSchema = new mongoose.Schema({
   amount: {
     type: Number,
     required: true,
+    min: config.minAmount,
   },
   nonce: {
     type: Number,

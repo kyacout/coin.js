@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const wallet = require('../wallet/wallet');
 const client = require('../../p2pNetwork/client');
+const miner = require('../block/miner');
 
 const Transaction = mongoose.model('Transaction');
 
@@ -27,7 +28,12 @@ exports.readTransaction = async (req, response) => {
 exports.newTransaction = async (req, response) => {
   const transaction = new Transaction(req.body);
   transaction.from = wallet.account.address;
-  transaction.nonce = wallet.account.txn;
+  transaction.nonce = wallet.account.txCount;
+
+  if (transaction.from == transaction.to) {
+    response.send('Coins cannot be sent to your address. Please specify a different address to send coins');
+    return;
+  }
 
   try {
     const signature = await wallet.signTransaction(transaction);
