@@ -1,26 +1,27 @@
-const io = require('socket.io-client');
+const ioClient = require('socket.io-client');
 const mongoose = require('mongoose');
 const nwInterfaces = require('os').networkInterfaces;
 const config = require('../config');
 const trxController = require('./transaction/transactionController');
 
 const Transaction = mongoose.model('Transaction');
+let ioServer = {};
 
 function getLocalExternalIP() {
   return [].concat(...Object.values(nwInterfaces()))
-  .filter(details => details.family === 'IPv4' && !details.internal)
-  .pop().address;
+    .filter(details => details.family === 'IPv4' && !details.internal).pop().address;
 }
 
 module.exports.init = (io) => {
+  ioServer = io;
   io.on('connection', (socket) => {
     console.log(`User connected: ${socket.id}`);
     initSocket(socket);
   });
 
-  module.exportsconfig.knownNodes.forEach((node) => {
+  config.knownNodes.forEach((node) => {
     if (node.ip != getLocalExternalIP()) {
-      const socket = io.connect(`http://${node.ip}:${node.port}`);
+      const socket = ioClient.connect(`http://${node.ip}:${node.port}`);
       initSocket(socket);
     }
   });
@@ -42,29 +43,8 @@ async function getTxnBody(txnKey) {
 
 module.exports.broadcastTransaction = (txnKey) => {
   console.log(`Broadcasting new transaction: ${txnKey.toString('base64')}`);
-  socket.emit('newTxn', txnKey, getTxnBody);
+  ioServer.sockets.emit('newTxn', txnKey);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 async function newTxn(txnKey, getTxnBody) {
   console.log('Received new transaction ..');

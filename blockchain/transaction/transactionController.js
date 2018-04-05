@@ -40,7 +40,7 @@ exports.newTransaction = async (req, response) => {
     transaction.key = signature;
     await transaction.save();
     response.send(formatTransaction(transaction));
-    await client.broadcastTransaction(transaction.key);
+    client.broadcastTransaction(transaction.key);
   } catch (e) {
     response.send(e);
   }
