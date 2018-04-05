@@ -4,19 +4,14 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const nwInterfaces = require('os').networkInterfaces;
 
-require('./server/index');
-const routes = require('./server/routes');
-const wallet = require('./server/wallet/wallet');
-const server = require('./server/server');
-const miner = require('./server/block/miner');
+require('./blockchain/index');
+const routes = require('./blockchain/routes');
+const wallet = require('./blockchain/wallet/wallet');
+const p2p = require('./blockchain/p2pConnections');
+const miner = require('./blockchain/block/miner');
 
 const PORT = 3322;
-
-module.exports.getLocalExternalIP = () => [].concat(...Object.values(nwInterfaces()))
-  .filter(details => details.family === 'IPv4' && !details.internal)
-  .pop().address;
 
 (async () => {
   const logger = new Console(process.stdout, process.stderr);
@@ -24,13 +19,13 @@ module.exports.getLocalExternalIP = () => [].concat(...Object.values(nwInterface
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
   routes(app);
-  server(io);
 
   try {
     await mongoose.connect('mongodb://localhost/blockchainDb');
     await wallet.init();
     await miner.init();
     http.listen(PORT, () => logger.log(`Coin.js node successfuly started on: ${PORT}`));
+    p2p.init(io);
   } catch (e) {
     logger.error(e);
   }

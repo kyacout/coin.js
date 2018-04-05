@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const wallet = require('../wallet/wallet');
-const client = require('../../p2pNetwork/client');
+const client = require('../p2pConnections');
 const miner = require('../block/miner');
 
 const Transaction = mongoose.model('Transaction');
