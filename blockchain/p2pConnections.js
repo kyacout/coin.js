@@ -44,6 +44,7 @@ async function getTxnBody(txnKey) {
 module.exports.broadcastTransaction = (txnKey) => {
   console.log(`Broadcasting new transaction: ${txnKey.toString('base64')}`);
   ioServer.sockets.emit('newTxn', txnKey);
+  ioClient.Socket.emit('newTxn', txnKey);
 };
 
 async function newTxn(txnKey, getTxnBody) {
